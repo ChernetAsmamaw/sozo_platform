@@ -127,7 +127,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 
 
 # create a custom serializer for the author
-class AuthorSerializer(serializers.ModelSerializer):
+class AuthorSerializer(serializers.Serializer):
     views = serializers.IntegerField(default=0)
     likes = serializers.IntegerField(default=0)
     posts = serializers.IntegerField(default=0)

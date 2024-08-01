@@ -108,6 +108,7 @@ class Post(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=100)
+    tags = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(null=True, blank=True)
     image = models.FileField(upload_to='image/post', default='default/post.jpg', blank=True, null=True)
     status = models.CharField(max_length=100, choices=STATUS, default='Active')
@@ -185,4 +186,3 @@ class Notification(models.Model):
     class Meta:
         ordering = ['-date']
         verbose_name_plural = 'Notification'
-    
