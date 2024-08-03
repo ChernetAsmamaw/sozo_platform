@@ -385,3 +385,65 @@ class DashboardCreatePostAPIView(APIView):
         )
 
         return Response({'message': 'Post Created Successfully'}, status=status.HTTP_200_OK)
+    
+
+# Dashboard to update the post
+class DashboardEditPostAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = api_serializer.PostSerializer
+    permission_classes = [AllowAny]
+
+    # Tweaking the swagger documentation to add the request body
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'title': openapi.Schema(type=openapi.TYPE_STRING, description='Title of the post'),
+                'image': openapi.Schema(type=openapi.TYPE_STRING, description='Image URL of the post'),
+                'description': openapi.Schema(type=openapi.TYPE_STRING, description='Description of the post'),
+                'tags': openapi.Schema(type=openapi.TYPE_STRING, description='Tags associated with the post'),
+                'category': openapi.Schema(type=openapi.TYPE_INTEGER, description='Category ID of the post'),
+                'post_status': openapi.Schema(type=openapi.TYPE_STRING, description='Status of the post')
+            },
+            required=['title']  # Adjust based on your requirements
+        )
+    )
+
+    def get_object(self):
+        user_id = self.kwargs['user_id']
+        post_id = self.kwargs['post_id']
+        user = api_models.User.objects.get(id=user_id)
+        return api_models.Post.objects.get(user=user, id=post_id)
+
+    def update(self, request, *args, **kwargs):
+        post_instance = self.get_object()
+
+        title = request.data.get('title')
+        image = request.data.get('image')
+        description = request.data.get('description')
+        tags = request.data.get('tags')
+        category_id = request.data.get('category')
+        post_status = request.data.get('post_status')
+
+        # Print the data to the console
+        print(title)
+        print(image)
+        print(description)
+        print(tags)
+        print(category_id)
+        print(post_status)
+        print(post_instance)
+
+        
+        category = api_models.Category.objects.get(id=category_id)
+
+        post_instance.title = title
+        if image != 'undefined':
+            post_instance.image = image
+        post_instance.tags = tags
+        post_instance.description = description
+        post_instance.category = category
+        post_instance.status = post_status
+        
+        post_instance.save()
+
+        return Response({'message': 'Post Updated Successfully'}, status=status.HTTP_200_OK)
