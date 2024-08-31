@@ -76,7 +76,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super(CommentSerializer, self).__init__(*args, **kwargs)
-        request = kwargs['context']['request']
+        request = self.context.get('request')
         # the depth is the number of levels up the serializer should go
         if request and request.method == 'POST':
             self.Meta.depth = 0
@@ -85,6 +85,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+
+    comments = CommentSerializer(many=True)
+
     class Meta:
         model = api_models.Post
         fields = "__all__"

@@ -88,13 +88,12 @@ class PostDetailAPIView(generics.RetrieveAPIView):
     serializer_class = api_serializer.PostSerializer
     permission_classes = [AllowAny]
 
-    def get_queryset(self):
+    def get_object(self):
         slug = self.kwargs['slug']
         post = api_models.Post.objects.get(slug=slug, status='Active')
-        post.views += 1
+        post.view += 1
         post.save()
         return post
-
 
 # Like posts 
 class LikePostAPIView(APIView):
@@ -119,7 +118,7 @@ class LikePostAPIView(APIView):
 
         if user in post.like.all():
             post.like.remove(user)
-            return Response({'message': 'Post Unliked'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Post Disliked'}, status=status.HTTP_200_OK)
         else:
             post.like.add(user)
             
@@ -141,24 +140,27 @@ class PostCommentAPIView(APIView):
             request_body=openapi.Schema(
                 type=openapi.TYPE_OBJECT,
                 properties={
-                    'user_id': openapi.Schema(type=openapi.TYPE_INTEGER),
                     'post_id': openapi.Schema(type=openapi.TYPE_INTEGER),
+                    'name': openapi.Schema(type=openapi.TYPE_STRING),
+                    'email': openapi.Schema(type=openapi.TYPE_STRING),
                     'comment': openapi.Schema(type=openapi.TYPE_STRING)
                 }
             )
     )
 
     def post(self, request):
-        user_id = request.data['user_id']
         post_id = request.data['post_id']
+        name = request.data['name']
+        email  = request.data['email']
         comment = request.data['comment']
 
         post = api_models.Post.objects.get(id=post_id)
 
         api_models.Comment.objects.create(
-            user_id=user_id,
             post=post,
-            comment=comment
+            name=name,
+            email=email,
+            comment=comment,
         )
 
         # create notification for the post owner

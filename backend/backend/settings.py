@@ -187,8 +187,8 @@ SIMPLE_JWT = {
 }
 
 
-# CORS settings
-CORS_ALLOWED_ALL_ORIGINS = True
+# CORS settings - to allow the frontend to access the backend
+CORS_ALLOW_ALL_ORIGINS = True
 
 # new user model
 AUTH_USER_MODEL = 'api.User'

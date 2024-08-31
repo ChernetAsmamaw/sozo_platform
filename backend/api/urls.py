@@ -10,8 +10,8 @@ urlpatterns = [
     path('user/profile/<int:user_id>/', api_views.ProfileView.as_view()),
 
     # Post endpoints
-    path('post/catagory/list/', api_views.CategoryListAPIView.as_view()),
-    path('post/catagory/posts/<slug:catagory_slug>/', api_views.PostCategoryListAPIView.as_view()),
+    path('post/category/list/', api_views.CategoryListAPIView.as_view()),
+    path('post/category/posts/<slug:category_slug>/', api_views.PostCategoryListAPIView.as_view()),
     path('post/lists/', api_views.PostListAPIView.as_view()),
     path('post/detail/<slug:slug>/', api_views.PostDetailAPIView.as_view()),
     path('post/like-post/', api_views.LikePostAPIView.as_view()),
