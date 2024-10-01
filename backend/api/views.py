@@ -264,10 +264,7 @@ class DashboardCommentLists(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        # Multi author so no need to filter by user
-        user_id = self.kwargs['user_id']
-        user = api_models.User.objects.get(id=user_id)
-        return api_models.Comment.objects.filter(post__user=user).order_by('-id')
+        return api_models.Comment.objects.all().order_by('-id')
     
 
 # List the notifications for the author
