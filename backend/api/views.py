@@ -323,13 +323,16 @@ class DashboardReplyCommentAPIView(APIView):
         comment = api_models.Comment.objects.get(id=comment_id)
 
         # Create a new comment object and save it
-        api_models.Comment.objects.create(
-            post=comment.post,
-            user=comment.user,
-            comment=reply,
-            reply=comment
-        )
+        # api_models.Comment.objects.create(
+        #     post=comment.post,
+        #     user=comment.user,
+        #     comment=reply,
+        #     reply=comment
+        # )
 
+
+        comment = api_models.Comment.objects.get(id=comment_id)
+        comment.reply = reply
         # It's already saved in the create method above but for clarity
         comment.save()
 

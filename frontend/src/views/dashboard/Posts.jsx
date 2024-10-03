@@ -81,7 +81,10 @@ function Posts() {
                         {posts?.length}
                       </span>
                     </h5>
-                    <a href="#" className="btn btn-sm btn-primary mb-0">
+                    <a
+                      href={`/add-post/`}
+                      className="btn btn-sm btn-primary mb-0"
+                    >
                       Add New <i className="fas fa-plus"></i>
                     </a>
                   </div>
